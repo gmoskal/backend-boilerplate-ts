@@ -1,19 +1,11 @@
 import * as express from "express"
 import { calculate } from "./policy"
 
-const app: express.Application = express()
-const port: number = parseInt(process.env.PORT, 10) || 3000
+const app = express()
 
-app.get("/", (_req: express.Request, res: express.Response) => {
-    res.send("Hello, World!")
-})
+app.get("/", (_req, res) => res.send("Hello, World!"))
+app.get("/:name", (req, res) => res.send(`Hello, ${calculate(req.params.name)}`))
 
-app.get("/:name", (req: express.Request, res: express.Response) => {
-    const { name } = req.params
-    res.send(`Hello, ${calculate(name)}`)
-})
-
-app.listen(port, () => {
-    // tslint:disable-next-line:no-console
-    console.log(`Listening at http://localhost:${port}/`)
-})
+const port = parseInt(process.env.PORT || "", 10) || 3000
+// tslint:disable-next-line:no-console
+app.listen(port, () => console.log(`Listening at http://localhost:${port}/`))
